@@ -6,7 +6,7 @@ var proto = function(obj){
 };
 
 var fallback = function(obj){
-    return (/\[.* (.*)\]/i).exec(Object.prototype.toString.apply(obj))[1].toLowerCase()
+    return (/\[.* (.*)\]/i).exec(proto(obj))[1].toLowerCase()
 };
 
 var BaseTypes = {
