@@ -6,7 +6,7 @@ var proto = function(obj){
 };
 
 var fallback = function(obj){
-    return (/\[.* (.*)\]/i).exec(proto(obj))[1].toLowerCase()
+    return (/\[.* (.*)\]/i).exec(proto(obj))[1].toLowerCase();
 };
 
 var Checks = {
@@ -49,7 +49,7 @@ var Checks = {
 exports.is = function(obj, type){
     if (arguments.length === 2){
         if (null === type) type = 'null';
-        if (undefined == type) type = 'undefined'
+        if (undefined == type) type = 'undefined';
 
         var comparitor = Checks.UserTypes[type] || Checks.BaseTypes[type.toLowerCase()];
         if (comparitor) return comparitor(obj);
