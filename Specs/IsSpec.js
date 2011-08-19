@@ -1,7 +1,7 @@
 
 
 describe('is', function(){
-    
+
     it('should be defined on global scope', function(){
         expect(is).toBeDefined();
     });
@@ -31,7 +31,7 @@ describe('is', function(){
     });
 
     describe('single argument call', function(){
-        
+
         it('should detect undefined', function(){
             var a;
             expect(is(a)).toBe('undefined');
@@ -40,7 +40,7 @@ describe('is', function(){
         it('should detect null', function(){
             expect(is(null)).toBe('null');
         });
-        
+
         it('should detect string', function(){
             expect(is('hello')).toBe('string');
             expect(is(new String('world'))).toBe('string');
@@ -77,7 +77,7 @@ describe('is', function(){
     });
 
     describe('two argument call', function(){
-        
+
         it('should accept literal null', function(){
             expect(is(null, null)).toBe(true);
         });
