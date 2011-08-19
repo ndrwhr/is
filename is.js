@@ -1,16 +1,24 @@
 
 (function(exports, undefined){
 
+// Returns the passed in objects prototype
+// as a string. eg '[object Object]'
 var proto = function(obj){
     return Object.prototype.toString.apply(obj);
 };
 
+// If none of the other checks succeed, we can use
+// this function to return the objects type. Eg.
+// array out of [object Array] or string out of [object String]
 var fallback = function(obj){
     return (/\[.* (.*)\]/i).exec(proto(obj))[1].toLowerCase();
 };
 
+// Type - check pairs that will be run when is is called.
 var Checks = {
+    // No user defined types yet.
     UserTypes: {},
+    // These are the core javascript types to check.
     BaseTypes: {
         'null': function(obj){
             return null === obj;
@@ -19,9 +27,14 @@ var Checks = {
             return undefined === obj;
         }
     },
+    // Specific DOM element checks.
     DOMTypes: {}
 };
 
+
+// A more compact way to add a bunch of comparisons that only
+// differ by the value they are comparing, but not the way
+// that they're compared.
 var addMultiple = function(pairs, check, addTo){
     for (var type in pairs){
         (function(type, property){
@@ -42,7 +55,7 @@ addMultiple({
     return proto(obj) === type;
 }, Checks.BaseTypes);
 
-// Add aditional base types
+// Add aditional DOM types
 addMultiple({
     'element': 1,
     'textnode': 3,
@@ -53,27 +66,35 @@ addMultiple({
     return element && element.nodeType === nodeType;
 }, Checks.DOMTypes);
 
+
+// Actual is definition:
 exports.is = function(obj, type){
     if (arguments.length === 2){
+        // Allow users to pass in literal null or undefined.
         if (null === type) type = 'null';
         if (undefined == type) type = 'undefined';
 
+        // Try to find a comparitor that matches the users provided type.
         var comparitor = Checks.UserTypes[type] || Checks.DOMTypes[type.toLowerCase()] || Checks.BaseTypes[type.toLowerCase()];
         if (comparitor) return comparitor(obj);
 
         throw new Error('"' +type + '" is not supported by is.');
     } else {
+        // Compare against user values first.
         for (type in Checks.UserTypes)
             if (Checks.UserTypes[type](obj)) return type;
 
+        // Then DOM.
         if (obj && obj.nodeType !== undefined){
             for (type in Checks.DOMTypes)
                 if (Checks.DOMTypes[type](obj)) return type;
         }
 
+        // Then the BaseChecks.
         for (type in Checks.BaseTypes)
             if (Checks.BaseTypes[type](obj)) return type;
 
+        // Then the fallback.
         return fallback(obj);
     }
 };
