@@ -1,23 +1,42 @@
-# IS
-A really simple library to do basic type checking in javascript (without coercion)
+Super simple js type checking library.
 
-## Usage:
+     _           _
+    :_;         :_;
+    .-. .--.    .-. .--.
+    : :`._-.' _ : :`._-.'
+    :_;`.__.':_;: :`.__.'
+              .-. :
+              `._.'
 
-There are two different ways to use *is*:
+### USAGE #1 (single argument call):
 
-    // Called with single argument, 'is' will return
-    // the of the object as a lower case string.
+    // someObj {anything}: Object that you would like to know the type of.
+    
+    is(someObject);
+    
+    // Will return the type of the object as a lower case string.
+    
     is('mystring'); // returns 'string'
     is([1, 2, 3]); // returns 'array'
     is(true); //returns 'boolean'
 
-    // Called with two arguments, it will verify the
-    // type of the first to the string passed in.
-    is('mystring', 'string') // returns true
-    is(3.14, 'number') // returns true
-    is(42, 'string') // returns false
+### USAGE #2 (double argument call):
 
-You can also add type checking for your own objects:
+    // someObj  {anything}: Object that you would like to check the type of.
+    // someType {string}: The name of the type you are expecting.
+    
+    is(someObject, someType);
+    
+    // Will return true if someObj matches someType. Eg:
+    
+    is('mystring', 'string'); // returns true
+    is(3.14, 'number'); // returns true
+    is(42, 'string'); // returns false
+
+### Custom types:
+
+If you have your own special objects that are identifiable by certain fields,
+you can add your own types to check against:
 
     var larry = {
         dressesInWomensClothing: true,
@@ -26,13 +45,14 @@ You can also add type checking for your own objects:
     };
 
     is.add('Lumberjacks', function(obj){
+        // return true if obj is a lumberjack, otherwise false.
         return obj.dressesInWomensClothing && obj.hangsAroundInBars;
     });
-    
-    is(larry, 'Lumberjack') // returns true
+
+    is(larry, 'Lumberjack'); // returns true
 
 And if for some reason you want to remove an added type at a later time:
 
     is.remove('Lumberjack');
-    
-    is(larry) // return 'object'
+
+    is(larry); // return 'object'
