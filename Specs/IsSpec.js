@@ -6,6 +6,30 @@ describe('is', function(){
         expect(is).toBeDefined();
     });
 
+    describe('user defined types', function(){
+        var userObj;
+
+        beforeEach(function(){
+            userObj = {
+                identifyingFeature: true
+            };
+        });
+
+        it('should add and remove user type', function(){
+            is.add('userObj', function(obj){
+                return obj.identifyingFeature;
+            });
+
+            expect(is(userObj)).toBe('userObj');
+            expect(is(userObj, 'userObj')).toBe(true);
+
+            is.remove('userObj');
+
+            expect(is(userObj)).toBe('object');
+        });
+
+    });
+
     describe('single argument call', function(){
         
         it('should detect undefined', function(){
