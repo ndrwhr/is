@@ -101,4 +101,49 @@ describe('is', function(){
 
     });
 
+    describe('DOM types', function(){
+
+        var element;
+
+        beforeEach(function(){
+            element = document.createElement('div');
+        });
+
+        it('should detect element', function(){
+            expect(is(element)).toBe('element');
+            expect(is(element, 'element')).toBe(true);
+        });
+
+        it('should detect textnode', function(){
+            element.innerHTML = 'some text';
+
+            var text = element.firstChild;
+
+            expect(is(text)).toBe('textnode');
+            expect(is(text, 'textnode')).toBe(true);
+        });
+
+        it('should detect comment', function(){
+            element.innerHTML = '<!-- a comment -->';
+
+            var text = element.firstChild;
+
+            expect(is(text)).toBe('comment');
+            expect(is(text, 'comment')).toBe(true);
+        });
+
+        it('should detect document', function(){
+            expect(is(document)).toBe('document');
+            expect(is(document, 'document')).toBe(true);
+        });
+
+        it('should detect fragment', function(){
+            var fragment = document.createDocumentFragment();
+
+            expect(is(fragment)).toBe('fragment');
+            expect(is(fragment, 'fragment')).toBe(true);
+        });
+
+    });
+
 });

@@ -43,6 +43,23 @@ var Checks = {
         'object': function(obj){
             return proto(obj) === '[object Object]';
         }
+    },
+    DOMTypes: {
+        'element': function(element){
+            return element.nodeType === 1;
+        },
+        'textnode': function(element){
+            return element.nodeType === 3;
+        },
+        'comment': function(element){
+            return element.nodeType === 8;
+        },
+        'document': function(element){
+            return element.nodeType === 9;
+        },
+        'fragment': function(element){
+            return element.nodeType === 11;
+        }
     }
 };
 
@@ -51,13 +68,18 @@ exports.is = function(obj, type){
         if (null === type) type = 'null';
         if (undefined == type) type = 'undefined';
 
-        var comparitor = Checks.UserTypes[type] || Checks.BaseTypes[type.toLowerCase()];
+        var comparitor = Checks.UserTypes[type] || Checks.DOMTypes[type.toLowerCase()] || Checks.BaseTypes[type.toLowerCase()];
         if (comparitor) return comparitor(obj);
 
         throw new Error('"' +type + '" is not supported by is.');
     } else {
         for (type in Checks.UserTypes)
             if (Checks.UserTypes[type](obj)) return type;
+
+        if (obj && obj.nodeType !== undefined){
+            for (type in Checks.DOMTypes)
+                if (Checks.DOMTypes[type](obj)) return type;
+        }
 
         for (type in Checks.BaseTypes)
             if (Checks.BaseTypes[type](obj)) return type;
