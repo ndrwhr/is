@@ -51,7 +51,7 @@ exports.is = function(obj, type){
         if (null === type) type = 'null';
         if (undefined == type) type = 'undefined'
 
-        var comparitor = Checks.UserTypes[type] || Checks.BaseTypes[type];
+        var comparitor = Checks.UserTypes[type] || Checks.BaseTypes[type.toLowerCase()];
         if (comparitor) return comparitor(obj);
 
         throw new Error('"' +type + '" is not supported by is.');
