@@ -14,58 +14,59 @@ var fallback = function(obj){
     return (/\[.* (.*)\]/i).exec(proto(obj))[1].toLowerCase();
 };
 
+
+// A more compact way to add a bunch of comparisons that only
+// differ by the value they are comparing, but not the way
+// that they're compared.
+var addMultiple = function(to, pairs, check){
+    for (var type in pairs){
+        (function(type, property){
+            to[type] = function(obj){ return check(obj, property); };
+        })(type, pairs[type]);
+    }
+    return to;
+};
+
 // Type - check pairs that will be run when is is called.
 var Checks = {
     // No user defined types yet.
     UserTypes: {},
     // These are the core javascript types to check.
-    BaseTypes: {
-        'null': function(obj){
-            return null === obj;
+    BaseTypes: addMultiple(
+        {
+            'null': function(obj){
+                return null === obj;
+            },
+            'undefined': function(obj){
+                return undefined === obj;
+            }
+        }, {
+            'boolean': '[object Boolean]',
+            'string': '[object String]',
+            'number': '[object Number]',
+            'array': '[object Array]',
+            'function': '[object Function]',
+            'object': '[object Object]'
         },
-        'undefined': function(obj){
-            return undefined === obj;
+        function(obj, type){
+            return proto(obj) === type;
         }
-    },
+    ),
     // Specific DOM element checks.
-    DOMTypes: {}
+    DOMTypes: addMultiple(
+        {},
+        {
+            'element': 1,
+            'textnode': 3,
+            'comment': 8,
+            'document': 9,
+            'fragment': 11
+        },
+        function(element, nodeType){
+            return element && element.nodeType === nodeType;
+        }
+    )
 };
-
-
-// A more compact way to add a bunch of comparisons that only
-// differ by the value they are comparing, but not the way
-// that they're compared.
-var addMultiple = function(pairs, check, addTo){
-    for (var type in pairs){
-        (function(type, property){
-            addTo[type] = function(obj){ return check(obj, property); };
-        })(type, pairs[type]);
-    }
-};
-
-// Add aditional base types
-addMultiple({
-    'boolean': '[object Boolean]',
-    'string': '[object String]',
-    'number': '[object Number]',
-    'array': '[object Array]',
-    'function': '[object Function]',
-    'object': '[object Object]'
-}, function(obj, type){
-    return proto(obj) === type;
-}, Checks.BaseTypes);
-
-// Add aditional DOM types
-addMultiple({
-    'element': 1,
-    'textnode': 3,
-    'comment': 8,
-    'document': 9,
-    'fragment': 11
-}, function(element, nodeType){
-    return element && element.nodeType === nodeType;
-}, Checks.DOMTypes);
-
 
 // Actual is definition:
 exports.is = function(obj, type){
