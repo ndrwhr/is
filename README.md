@@ -27,7 +27,7 @@ Super simple js type checking library.
     
     is(someObject, someType);
     
-    // Will return true if someObj matches someType. Eg:
+    // Will return true if someObj matches someType.
     
     is('mystring', 'string'); // returns true
     is(3.14, 'number'); // returns true
@@ -56,3 +56,8 @@ And if for some reason you want to remove an added type at a later time:
     is.remove('Lumberjack');
 
     is(larry); // return 'object'
+
+### Contribute:
+
+Any ideas on how to better detect types, submit a pull request (must include
+covering jasmine tests), or shoot me a short [email](mailto:me@andrew-hoyer.com).
