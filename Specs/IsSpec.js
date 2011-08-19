@@ -54,7 +54,7 @@ describe('is', function(){
         it('should detect boolean', function(){
             expect(is(true)).toBe('boolean');
             expect(is(false)).toBe('boolean');
-        })
+        });
 
         it('should detect array', function(){
             expect(is([])).toBe('array');
@@ -91,7 +91,7 @@ describe('is', function(){
         });
 
         it('should accept string undefined', function(){
-            expect(is(undefined, 'undefined')).toBe(true)
+            expect(is(undefined, 'undefined')).toBe(true);
         });
 
         it('should detect null is not undefined', function(){
