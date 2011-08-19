@@ -46,6 +46,11 @@ describe('is', function(){
             expect(is(new String('world'))).toBe('string');
         });
 
+        it('should detect numbers', function(){
+            expect(is(3)).toBe('number');
+            expect(is(3.14)).toBe('number');
+        });
+
         it('should detect boolean', function(){
             expect(is(true)).toBe('boolean');
             expect(is(false)).toBe('boolean');

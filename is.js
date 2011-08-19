@@ -28,6 +28,10 @@ var Checks = {
             return proto(obj) === '[object String]';
         },
 
+        'number': function(obj){
+            return proto(obj) === '[object Number]';
+        },
+
         'array': function(obj){
             return proto(obj) === '[object Array]';
         },
