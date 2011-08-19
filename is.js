@@ -15,53 +15,43 @@ var Checks = {
         'null': function(obj){
             return null === obj;
         },
-
         'undefined': function(obj){
             return undefined === obj;
-        },
-
-        'boolean': function(obj){
-            return proto(obj) === '[object Boolean]';
-        },
-
-        'string': function(obj){
-            return proto(obj) === '[object String]';
-        },
-
-        'number': function(obj){
-            return proto(obj) === '[object Number]';
-        },
-
-        'array': function(obj){
-            return proto(obj) === '[object Array]';
-        },
-
-        'function': function(obj){
-            return proto(obj) === '[object Function]';
-        },
-
-        'object': function(obj){
-            return proto(obj) === '[object Object]';
         }
     },
-    DOMTypes: {
-        'element': function(element){
-            return element.nodeType === 1;
-        },
-        'textnode': function(element){
-            return element.nodeType === 3;
-        },
-        'comment': function(element){
-            return element.nodeType === 8;
-        },
-        'document': function(element){
-            return element.nodeType === 9;
-        },
-        'fragment': function(element){
-            return element.nodeType === 11;
-        }
+    DOMTypes: {}
+};
+
+var addMultiple = function(pairs, check, addTo){
+    for (var type in pairs){
+        (function(type, property){
+            addTo[type] = function(obj){ return check(obj, property); };
+        })(type, pairs[type]);
     }
 };
+
+// Add aditional base types
+addMultiple({
+    'boolean': '[object Boolean]',
+    'string': '[object String]',
+    'number': '[object Number]',
+    'array': '[object Array]',
+    'function': '[object Function]',
+    'object': '[object Object]'
+}, function(obj, type){
+    return proto(obj) === type;
+}, Checks.BaseTypes);
+
+// Add aditional base types
+addMultiple({
+    'element': 1,
+    'textnode': 3,
+    'comment': 8,
+    'document': 9,
+    'fragment': 11
+}, function(element, nodeType){
+    return element && element.nodeType === nodeType;
+}, Checks.DOMTypes);
 
 exports.is = function(obj, type){
     if (arguments.length === 2){
