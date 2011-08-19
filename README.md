@@ -8,7 +8,7 @@ Super simple js type checking library.
               .-. :
               `._.'
 
-### USAGE #1 (single argument call):
+### Usage #1 (single argument call):
 
     // someObj {anything}: Object that you would like to know the type of.
     
@@ -20,7 +20,7 @@ Super simple js type checking library.
     is([1, 2, 3]); // returns 'array'
     is(true); //returns 'boolean'
 
-### USAGE #2 (double argument call):
+### Usage #2 (double argument call):
 
     // someObj  {anything}: Object that you would like to check the type of.
     // someType {string}: The name of the type you are expecting.
